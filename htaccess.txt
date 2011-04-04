@@ -44,6 +44,18 @@
 ## Nicholas K. Dionysopoulos
 ## Lead Developer, AkeebaBackup.com
 ##
+## IMPORTANT:
+## Before suggesting any change to this file, please ensure that:
+## a. it WORKS;
+## b. it DOES NOT replace one functionality with something completely
+##    different because you assumed something wrong;
+## c. it solves a pragmatic problem with proof, e.g. if you claim
+##    performance gains show me your benchmarking results
+## d. it is not a matter of coding style;
+## e. it is not already discussed in the comments and overruled because
+##    of the above.
+## Thank you!
+##
 ## CHANGELOG:
 ## Version 3.0 (March 28th, 2011)
 ## - Massive rewrite
@@ -340,9 +352,9 @@ RewriteRule .* - [F]
 ## Back-end protection
 ## This also blocks fingerprinting attacks browsing for XML and INI files
 RewriteRule ^administrator/?$ - [L]
-RewriteRule ^administrator/index.html?$ - [L]
-RewriteRule ^administrator/index2?.php$ - [L]
-RewriteRule ^administrator/(components|modules|templates|images|plugins)/.*\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(e|eg|3|4)|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od(t|s|p)|flv|mov)$ - [L]
+RewriteRule ^administrator/index\.(php|html?)$ - [L]
+RewriteRule ^administrator/index[23]\.php$ - [L]
+RewriteRule ^administrator/(components|modules|templates|images|plugins)/([^.]+)\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
 RewriteRule ^administrator/ - [F]
 
 ## Explicitly allow access only to XML-RPC's xmlrpc/index.php or plain xmlrpc/ directory
@@ -351,13 +363,18 @@ RewriteRule ^xmlrpc/ - [F]
 
 ## Disallow front-end access for certain Joomla! system directories
 RewriteRule ^includes/js/ - [L]
-RewriteRule ^(cache|includes|language|libraries|logs|tmp)/? - [F]
+RewriteRule ^(cache|includes|language|libraries|logs|tmp)/ - [F]
 
 ## Allow limited access for certain Joomla! system directories with client-accessible content
-RewriteRule ^(components|modules|plugins|templates)/.*\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(e|eg|3|4)|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od(t|s|p)|flv|mov)$ - [L]
-RewriteRule ^(components|modules|plugins|templates)/.*/index\.php(.*)$ - [L]
-RewriteRule ^templates/.*\.php$ $1 [L]
-RewriteRule ^(components|modules|plugins|templates)/? - [F]
+RewriteRule ^(components|modules|plugins|templates)/([^.]+)\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(e|eg|3|4)|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
+## Uncomment this line if you have extensions which require direct access to their own
+## custom index.php files. Note that this is UNSAFE and the developer should be ashamed
+## for being so lame, lazy and security unconscious.
+# RewriteRule ^(components|modules|plugins|templates)/([^/]+/)*(index\.php)? - [F]
+## Uncomment the following line if your template requires direct access to PHP files
+## inside its directory, e.g. GZip compressed copies of its CSS files
+# RewriteRule ^templates/([^.]+)\.php$ - [L]
+RewriteRule ^(components|modules|plugins|templates)/ - [F]
 
 ## Disallow rogue scripts in your site's root
 # Exception: Allow Joomla!'s index.php and index2.php files
@@ -371,7 +388,7 @@ RewriteRule ^(htaccess\.txt|configuration\.php-dist)$ - [F]
 ## http://www.sigsiu.net/presentations/fortifying_your_joomla_website.html
 ## May cause problems on legitimate requests
 RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
-RewriteCond %{QUERY_STRING} union([^s]*s)+elect.*[^\(]*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
 RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC]
 RewriteRule .* - [F]
 
