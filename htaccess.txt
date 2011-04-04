@@ -44,26 +44,17 @@
 ## Nicholas K. Dionysopoulos
 ## Lead Developer, AkeebaBackup.com
 ##
-## IMPORTANT:
-## Before suggesting any change to this file, please ensure that:
-## a. it WORKS;
-## b. it DOES NOT replace one functionality with something completely
-##    different because you assumed something wrong;
-## c. it solves a pragmatic problem with proof, e.g. if you claim
-##    performance gains show me your benchmarking results
-## d. it is not a matter of coding style;
-## e. it is not already discussed in the comments and overruled because
-##    of the above.
-## Thank you!
-##
 ## CHANGELOG:
-## Version 3.1 (April 4th, 2011)
-##
-##
-##
-##
-##
-##
+## Version 3.1 (April 5th, 2011)
+## - Expiration time of static resources adjusted to 1 month instead of 1 year
+## - GET variables not passed along in the index.php to site root redirection
+## - Fixed typos
+## - Alternative for HTTP to HTTPS redirection
+## - Common exploits protection: Minor changes in comments, combined base64_encode/base64_decode rule
+## - Bug in query string protection rule
+## - Back-end & front-end protection optimization
+## - Fixed the UNION SELECT SQLi rule to actually work against real attacks
+## - Added comments to Joomla! core SEF section
 ## Version 3.0 (March 28th, 2011)
 ## - Massive rewrite
 ## Version 2.3 (November 18th, 2010)
