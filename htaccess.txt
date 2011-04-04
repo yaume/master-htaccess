@@ -199,26 +199,28 @@ RewriteRule ^index\.php$ http%2://www.example.com/$1 [R=301,L]
 
 ########## Begin - Redirect non-www to www
 RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R,L]
+RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+## If the above throws an HTTP 500 error, swap [R=301,L] with [R,L]
 ########## End - Redirect non-www to www
 
 ########## Begin - Redirect www to non-www
 ## WARNING: Comment out the non-www to www rule if you choose to use this
 # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-# RewriteRule ^(.*)$ http://%1/$1 [R,L]
+# RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+## If the above throws an HTTP 500 error, swap [R=301,L] with [R,L]
 ########## End - Redirect non-www to www
 
 ########## Begin - Redirect (www.)olddomain.com to www.example.com
 ## Note: olddomain.com is your old domain name, you want to redirect FROM,
 ## whereas www.example.com is the new domain name you want to redirect TO.
 ## Change those names to reflect your current configuration. Remember, this
-## file is supposed to be placed in www.example.com!
+## part of the file is supposed to be placed in www.example.com!
 ## Note: Replace [L=301,R] with [L,R] if you get error 500.
 ## Uncomment the following lines to enable:
 # RewriteCond %{HTTP_HOST} ^(www\.)?olddomain.com [NC] 
-# RewriteRule ^index\.php$ http://www.example.com/ [L=301,R]
-# RewriteCond %{HTTP_HOST} ^(www\.)?olddomain.com [NC] 
-# RewriteRule ^(.*)$ http://www.example.com/$1 [L=301,R]
+# RewriteRule ^(([^/]+/)*)index\.(php|html?) http://www.example.com/$1 [R=301,L]
+# RewriteCond %{HTTP_HOST} ^(www\.)?olddomain\.com [NC] 
+# RewriteRule (.*) http://www.example.com/$1 [R=301,L]
 ########## End - Redirect olddomain.com to www.domain.com
 
 ########## Begin - Force HTTPS for certain pages
