@@ -241,14 +241,15 @@ RewriteRule ^foobar\.html$ https://www.example.com/foobar.html [R=301,L]
 ## If you experience problems on your site block out the operations listed below
 ## This attempts to block the most common type of exploit `attempts` to Joomla!
 #
-# If the request contains /proc/self/environ (by SigSiu.net)
+# If the request query string contains /proc/self/environ (by SigSiu.net)
 RewriteCond %{QUERY_STRING} proc/self/environ [OR]
-# Legacy configuration variable injection
+# Legacy variable injection (these attacks wouldn't work w/out Joomla! 1.5's Legacy Mode plugin)
 RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
-# Block out any script trying to base64_encode stuff to send via URL
-RewriteCond %{QUERY_STRING} base64_encode\(.*\) [OR]
-# Block out any script trying to base64_decode stuff to send via URL
-RewriteCond %{QUERY_STRING} base64_decode\(.*\) [OR]
+# Block out any script trying to base64_encode/base64_decode stuff to send via URL
+RewriteCond %{QUERY_STRING} base64_(en|de)code\(.*\) [OR]
+## IMPORTANT: If the above line throws an HTTP 500 error, replace it with these 2 lines:
+# RewriteCond %{QUERY_STRING} base64_encode\(.*\) [OR]
+# RewriteCond %{QUERY_STRING} base64_decode\(.*\) [OR]
 # Block out any script that includes a <script> tag in URL
 RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
 # Block out any script trying to set a PHP GLOBALS variable via URL
