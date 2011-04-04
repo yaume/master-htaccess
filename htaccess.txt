@@ -45,9 +45,6 @@
 ## Lead Developer, AkeebaBackup.com
 ##
 ## CHANGELOG:
-## Version 3.1 (March 29th, 2011)
-## - Reverting change: ([^.]+) is replaced by .* once more. I prefer an unoptimized solution
-##   that DOES WORK instead of an "optimized" solution that doesn't work at all.
 ## Version 3.0 (March 28th, 2011)
 ## - Massive rewrite
 ## Version 2.3 (November 18th, 2010)
@@ -84,9 +81,9 @@ IndexIgnore *
 Options +FollowSymLinks All -Indexes
 ########## End - No directory listings
 
-########## Begin - File exection order, by Komra.de
+########## Begin - File execution order, by Komra.de
 DirectoryIndex index.php index.html
-########## End - File exection order
+########## End - File execution order
 
 ########## Begin - ETag Optimization
 ## This rule will create an ETag for files based only on the modification
