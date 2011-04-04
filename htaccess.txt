@@ -169,7 +169,7 @@ SetEnvIf user-agent "GrabNet" stayout=1
 SetEnvIf user-agent "TurnitinBot" stayout=1
 # This line denies access to all of the above tools
 deny from env=stayout
-########## End - Common hacking tools and bandwidth higgers block
+########## End - Common hacking tools and bandwidth hoggers block
 
 ########## Begin - Automatic compression of resources
 # Compress text, html, javascript, css, xml, kudos to Komra.de
@@ -313,11 +313,13 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## This blocks most common fingerprinting attacks ;)
 ## Note: Change www\.example\.com with your own domain name, substituting the dots with
 ## \., i.e.: www\.example\.com for www.example.com
-RewriteRule ^images/stories/.*\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
+RewriteRule ^images/stories/([^.]+)\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule \.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [F]
+# Note to fellow J! folks: .jpe2 and .jpg2 ARE NOT VALID EXTENSIONS. The proposed
+# jpe?[g2]? rule is WRONG!
 
 ## Disallow visual fingerprinting of Joomla! sites (module position dump)
 ## Initial idea by Brian Teeman and Ken Crowder, see:
@@ -326,7 +328,7 @@ RewriteRule \.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [F]
 ## and tmpl query parameters
 RewriteCond %{QUERY_STRING} (^|&)tmpl=(component|system) [NC]
 RewriteRule .* - [L]
-RewriteCond %{QUERY_STRING} (^|&)t(p|emplate|mpl)= [NC,OR]
+RewriteCond %{QUERY_STRING} (^|&)t(p|emplate|mpl)= [NC]
 RewriteRule .* - [F]
 
 ## Disallow PHP Easter Eggs (can be used in fingerprinting attacks to determine
