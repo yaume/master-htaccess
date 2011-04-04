@@ -229,8 +229,11 @@ RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
 # www.example.com to reflect your own domain. Remember to escape the dots using
 # \. in the left hand side of each rule. You need BOTH LINES PER URL for the rule
 # to work.
-RewriteCond %{HTTPS} ^off$ [NC]
-RewriteRule ^foobar\.html$ https://www.example.com/foobar.html [L,R]
+RewriteCond %{SERVER_PORT} !^443$
+## Alternatively, comment the above line and uncomment the following line:
+# RewriteCond %{HTTPS} ^off$ [NC]
+RewriteRule ^foobar\.html$ https://www.example.com/foobar.html [R=301,L]
+## NOTE: If you get an HTTP 500 error, please swap [R=301,L] with [R,L]
 # Add more rules below this line
 ########## End - Force HTTPS for certain pages
 
