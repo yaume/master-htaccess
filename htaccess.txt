@@ -227,8 +227,6 @@ RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
 ## part of the file is supposed to be placed in www.example.com!
 ## Note: Replace [L=301,R] with [L,R] if you get error 500.
 ## Uncomment the following lines to enable:
-# RewriteCond %{HTTP_HOST} ^(www\.)?olddomain.com [NC] 
-# RewriteRule ^(([^/]+/)*)index\.(php|html?) http://www.example.com/$1 [R=301,L]
 # RewriteCond %{HTTP_HOST} ^(www\.)?olddomain\.com [NC] 
 # RewriteRule (.*) http://www.example.com/$1 [R=301,L]
 ########## End - Redirect olddomain.com to www.domain.com
@@ -301,7 +299,6 @@ RewriteRule ^kickstart\.php$ - [L]
 
 ## Allow Agora attachments, but not PHP files in that directory!
 RewriteCond %{REQUEST_FILENAME} !(\.php)$
-RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^components/com_agora/img/members/ - [L]
 
 # Add more rules for allowing full access (except PHP files) on more directories here
@@ -326,10 +323,7 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 RewriteRule ^images/stories/([^.]+)\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
-RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule \.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [F]
-# Note to fellow J! folks: .jpe2 and .jpg2 ARE NOT VALID EXTENSIONS. The proposed
-# jpe?[g2]? rule is WRONG!
 
 ## Disallow visual fingerprinting of Joomla! sites (module position dump)
 ## Initial idea by Brian Teeman and Ken Crowder, see:
