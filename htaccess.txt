@@ -1,7 +1,7 @@
 ###############################################################################
 ## The Master .htaccess
 ##
-## Version 3.1 - March 29th, 2010
+## Version 3.2 - April 8th, 2011
 ##
 ## ----------
 ## This file is designed to be the template .htaccess file to put on your new
@@ -45,6 +45,8 @@
 ## Lead Developer, AkeebaBackup.com
 ##
 ## CHANGELOG:
+## Version 3.2 (April 8th, 2011)
+## - Some slight improvements with negligible (if any) performance impact
 ## Version 3.1 (April 5th, 2011)
 ## - Expiration time of static resources adjusted to 1 month instead of 1 year
 ## - GET variables not passed along in the index.php to site root redirection
@@ -225,7 +227,7 @@ RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
 ## whereas www.example.com is the new domain name you want to redirect TO.
 ## Change those names to reflect your current configuration. Remember, this
 ## part of the file is supposed to be placed in www.example.com!
-## Note: Replace [L=301,R] with [L,R] if you get error 500.
+## Note: Replace [L=301,R] with [R,L] if you get error 500.
 ## Uncomment the following lines to enable:
 # RewriteCond %{HTTP_HOST} ^(www\.)?olddomain\.com [NC] 
 # RewriteRule (.*) http://www.example.com/$1 [R=301,L]
@@ -264,7 +266,7 @@ RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
 RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
 # Block out any script trying to modify a _REQUEST variable via URL
 RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
-# Return a 403 Forbidden
+# Return a 403 Forbidden header and show the content of the root homepage
 RewriteRule .* index.php [F]
 #
 ########## End - Rewrite rules to block out some common exploits
@@ -320,7 +322,7 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## This blocks most common fingerprinting attacks ;)
 ## Note: Change www\.example\.com with your own domain name, substituting the dots with
 ## \., i.e.: www\.example\.com for www.example.com
-RewriteRule ^images/stories/([^.]+)\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
+RewriteRule ^images/stories/[^.]+\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
 RewriteRule \.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [F]
@@ -346,7 +348,7 @@ RewriteRule .* - [F]
 RewriteRule ^administrator/?$ - [L]
 RewriteRule ^administrator/index\.(php|html?)$ - [L]
 RewriteRule ^administrator/index[23]\.php$ - [L]
-RewriteRule ^administrator/(components|modules|templates|images|plugins)/([^.]+)\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
+RewriteRule ^administrator/(components|modules|templates|images|plugins)/[^.]+\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
 RewriteRule ^administrator/ - [F]
 
 ## Explicitly allow access only to XML-RPC's xmlrpc/index.php or plain xmlrpc/ directory
@@ -358,14 +360,14 @@ RewriteRule ^includes/js/ - [L]
 RewriteRule ^(cache|includes|language|libraries|logs|tmp)/ - [F]
 
 ## Allow limited access for certain Joomla! system directories with client-accessible content
-RewriteRule ^(components|modules|plugins|templates)/([^.]+)\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(e|eg|3|4)|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
+RewriteRule ^(components|modules|plugins|templates)/[^.]+\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(e|eg|3|4)|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
 ## Uncomment this line if you have extensions which require direct access to their own
 ## custom index.php files. Note that this is UNSAFE and the developer should be ashamed
 ## for being so lame, lazy and security unconscious.
-# RewriteRule ^(components|modules|plugins|templates)/([^/]+/)*(index\.php)? - [F]
+# RewriteRule ^(components|modules|plugins|templates)/([^/]+/)*(index\.php)?$ - [F]
 ## Uncomment the following line if your template requires direct access to PHP files
 ## inside its directory, e.g. GZip compressed copies of its CSS files
-# RewriteRule ^templates/([^.]+)\.php$ - [L]
+# RewriteRule ^templates/[^.]+\.php$ - [L]
 RewriteRule ^(components|modules|plugins|templates)/ - [F]
 
 ## Disallow rogue scripts in your site's root
