@@ -194,9 +194,9 @@ AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application
 
 ########## Begin - Google Apps redirection, by Komra.de
 ## Uncomment the following line to enable:
-# Redirect 301 /mail http://mail.google.com/a/example.com
+# RewriteRule ^mail http://mail.google.com/a/example.com [R=301,L]
 ## If the above doesn't work on your server, try this:
-## RewriteRule ^mail http://mail.google.com/a/example.com [R=301,L]
+## RewriteRule ^mail http://mail.google.com/a/example.com [R,L]
 ########## End - Google Apps redirection
 
 ########## Begin - Redirect index.php to /
@@ -226,7 +226,7 @@ RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
 ## Note: olddomain.com is your old domain name, you want to redirect FROM,
 ## whereas www.example.com is the new domain name you want to redirect TO.
 ## Change those names to reflect your current configuration. Remember, this
-## part of the file is supposed to be placed in www.example.com!
+## part of the file is supposed to be placed in www.olddomain.com!
 ## Note: Replace [L=301,R] with [R,L] if you get error 500.
 ## Uncomment the following lines to enable:
 # RewriteCond %{HTTP_HOST} ^(www\.)?olddomain\.com [NC] 
@@ -274,8 +274,8 @@ RewriteRule .* index.php [F]
 ########## Begin - File injection protection, by SigSiu.net
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
-RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.\/{1,2}){1,} [OR]
-RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]/{1,2}){1,} [NC]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.\//?)+ [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC]
 RewriteRule .* - [F]
 ########## End - File injection protection
 
@@ -322,10 +322,10 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## This blocks most common fingerprinting attacks ;)
 ## Note: Change www\.example\.com with your own domain name, substituting the dots with
 ## \., i.e.: www\.example\.com for www.example.com
-RewriteRule ^images/stories/[^.]+\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
+RewriteRule ^images/stories/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
-RewriteRule \.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [F]
+RewriteRule \.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [F]
 
 ## Disallow visual fingerprinting of Joomla! sites (module position dump)
 ## Initial idea by Brian Teeman and Ken Crowder, see:
@@ -348,7 +348,7 @@ RewriteRule .* - [F]
 RewriteRule ^administrator/?$ - [L]
 RewriteRule ^administrator/index\.(php|html?)$ - [L]
 RewriteRule ^administrator/index[23]\.php$ - [L]
-RewriteRule ^administrator/(components|modules|templates|images|plugins)/[^.]+\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
+RewriteRule ^administrator/(components|modules|templates|images|plugins)/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
 RewriteRule ^administrator/ - [F]
 
 ## Explicitly allow access only to XML-RPC's xmlrpc/index.php or plain xmlrpc/ directory
@@ -360,7 +360,7 @@ RewriteRule ^includes/js/ - [L]
 RewriteRule ^(cache|includes|language|libraries|logs|tmp)/ - [F]
 
 ## Allow limited access for certain Joomla! system directories with client-accessible content
-RewriteRule ^(components|modules|plugins|templates)/[^.]+\.(jp(eg|g|2)?|png|gif|bmp|css|js|swf|html?|mp(e|eg|3|4)|avi|wav|og(g|v)|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
+RewriteRule ^(components|modules|plugins|templates)/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
 ## Uncomment this line if you have extensions which require direct access to their own
 ## custom index.php files. Note that this is UNSAFE and the developer should be ashamed
 ## for being so lame, lazy and security unconscious.
@@ -368,12 +368,12 @@ RewriteRule ^(components|modules|plugins|templates)/[^.]+\.(jp(eg|g|2)?|png|gif|
 ## Uncomment the following line if your template requires direct access to PHP files
 ## inside its directory, e.g. GZip compressed copies of its CSS files
 # RewriteRule ^templates/[^.]+\.php$ - [L]
-RewriteRule ^(components|modules|plugins|templates)/ - [F]
+RewriteRule ^(components|modules|plugins|templates)/ - [L]
 
 ## Disallow rogue scripts in your site's root
 # Exception: Allow Joomla!'s index.php and index2.php files
 RewriteRule ^index2?\.php$ - [L]
-RewriteRule ^[^/]+\.php$ - [F]
+RewriteRule ^[^.]+\.php$ - [F]
 
 ## Disallow access to htaccess.txt and configuration.php-dist
 RewriteRule ^(htaccess\.txt|configuration\.php-dist)$ - [F]
@@ -409,7 +409,7 @@ RewriteRule .* - [F]
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 # If the requested path and file is not /index.php and the request
 # has not already been internally rewritten to the index.php script
-RewriteCond %{REQUEST_URI} !^/index.php
+RewriteCond %{REQUEST_URI} !^/index\.php
 # and the request is for the site root, or for an extensionless URL,
 # or the requested URL ends with one of the listed extensions
 RewriteCond %{REQUEST_URI} (/[^.]*|\.(php|html?|feed|pdf|raw|ini|zip|json|file))$ [NC]
