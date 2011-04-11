@@ -227,7 +227,7 @@ RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
 ## whereas www.example.com is the new domain name you want to redirect TO.
 ## Change those names to reflect your current configuration. Remember, this
 ## part of the file is supposed to be placed in www.olddomain.com!
-## Note: Replace [L=301,R] with [R,L] if you get error 500.
+## Note: Replace [R=301,L] with [R,L] if you get error 500.
 ## Uncomment the following lines to enable:
 # RewriteCond %{HTTP_HOST} ^(www\.)?olddomain\.com [NC] 
 # RewriteRule (.*) http://www.example.com/$1 [R=301,L]
@@ -274,7 +274,7 @@ RewriteRule .* index.php [F]
 ########## Begin - File injection protection, by SigSiu.net
 RewriteCond %{REQUEST_METHOD} GET
 RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
-RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.\//?)+ [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
 RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC]
 RewriteRule .* - [F]
 ########## End - File injection protection
@@ -320,8 +320,8 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 
 ## Referrer filtering for common media files. Replace with your own domain.
 ## This blocks most common fingerprinting attacks ;)
-## Note: Change www\.example\.com with your own domain name, substituting the dots with
-## \., i.e.: www\.example\.com for www.example.com
+## Note: Change www\.example\.com with your own domain name, substituting the
+## dots with \., i.e.: www\.example\.com for www.example.com
 RewriteRule ^images/stories/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
@@ -376,7 +376,7 @@ RewriteRule ^index2?\.php$ - [L]
 RewriteRule ^[^.]+\.php$ - [F]
 
 ## Disallow access to htaccess.txt and configuration.php-dist
-RewriteRule ^(htaccess\.txt|configuration\.php-dist)$ - [F]
+RewriteRule ^(htaccess\.txt|configuration\.php-dist|php\.ini)$ - [F]
 
 ## SQLi first line of defense, thanks to Radek Suski (SigSiu.net) @
 ## http://www.sigsiu.net/presentations/fortifying_your_joomla_website.html
@@ -412,7 +412,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_URI} !^/index\.php
 # and the request is for the site root, or for an extensionless URL,
 # or the requested URL ends with one of the listed extensions
-RewriteCond %{REQUEST_URI} (/[^.]*|\.(php|html?|feed|pdf|raw|ini|zip|json|file))$ [NC]
+RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|raw|ini|zip|json|file))$ [NC]
 # and the requested path and file doesn't directly match a physical file
 RewriteCond %{REQUEST_FILENAME} !-f
 # and the requested path and file doesn't match a physical folder
