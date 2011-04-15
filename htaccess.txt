@@ -255,7 +255,7 @@ RewriteRule ^foobar\.html$ https://www.example.com/foobar.html [R=301,L]
 RewriteCond %{QUERY_STRING} proc/self/environ [OR]
 # Legacy variable injection (these attacks wouldn't work w/out Joomla! 1.5's Legacy Mode plugin)
 RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
-# Block out any script trying to base64_encode/base64_decode stuff to send via URL
+# Block out any script trying to base64_encode/base64_decode data to send via URL
 RewriteCond %{QUERY_STRING} base64_(en|de)code\(.*\) [OR]
 ## IMPORTANT: If the above line throws an HTTP 500 error, replace it with these 2 lines:
 # RewriteCond %{QUERY_STRING} base64_encode\(.*\) [OR]
@@ -322,10 +322,10 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## This blocks most common fingerprinting attacks ;)
 ## Note: Change www\.example\.com with your own domain name, substituting the
 ## dots with \., i.e.: www\.example\.com for www.example.com
-RewriteRule ^images/stories/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [L]
+RewriteRule ^images/stories/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico?)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
-RewriteRule \.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico|html?)$ - [F]
+RewriteRule \.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [F]
 
 ## Disallow visual fingerprinting of Joomla! sites (module position dump)
 ## Initial idea by Brian Teeman and Ken Crowder, see:
@@ -364,11 +364,11 @@ RewriteRule ^(components|modules|plugins|templates)/[^.]+\.(jp(e?g|2)?|png|gif|b
 ## Uncomment this line if you have extensions which require direct access to their own
 ## custom index.php files. Note that this is UNSAFE and the developer should be ashamed
 ## for being so lame, lazy and security unconscious.
-# RewriteRule ^(components|modules|plugins|templates)/([^/]+/)*(index\.php)?$ - [F]
+# RewriteRule ^(components|modules|plugins|templates)/([^/]+/)*(index\.php)?$ - [L]
 ## Uncomment the following line if your template requires direct access to PHP files
 ## inside its directory, e.g. GZip compressed copies of its CSS files
 # RewriteRule ^templates/[^.]+\.php$ - [L]
-RewriteRule ^(components|modules|plugins|templates)/ - [L]
+RewriteRule ^(components|modules|plugins|templates)/ - [F]
 
 ## Disallow rogue scripts in your site's root
 # Exception: Allow Joomla!'s index.php and index2.php files
