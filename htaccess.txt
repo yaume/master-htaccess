@@ -229,9 +229,9 @@ RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
 ## part of the file is supposed to be placed in www.olddomain.com!
 ## Note: Replace [R=301,L] with [R,L] if you get error 500.
 ## Uncomment the following lines to enable:
-# RewriteCond %{HTTP_HOST} ^(www\.)?olddomain\.com [NC] 
+# RewriteCond %{HTTP_HOST} ^(www\.)?olddomain\.com [NC]
 # RewriteRule (.*) http://www.example.com/$1 [R=301,L]
-########## End - Redirect olddomain.com to www.domain.com
+########## End - Redirect olddomain.com to www.example.com
 
 ########## Begin - Force HTTPS for certain pages
 # Force the page foobar.html to run in HTTPS mode, no matter what Joomla! says.
@@ -412,10 +412,10 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_URI} !^/index\.php
 # and the request is for the site root, or for an extensionless URL,
 # or the requested URL ends with one of the listed extensions
-RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|raw|ini|zip|json|file))$ [NC]
+RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|raw|ini|zip|json|file|vcf))$ [NC]
 # and the requested path and file doesn't directly match a physical file
 RewriteCond %{REQUEST_FILENAME} !-f
-# and the requested path and file doesn't match a physical folder
+# and the requested path doesn't match a physical folder
 RewriteCond %{REQUEST_FILENAME} !-d
 # internally rewrite the request to the index.php script
 RewriteRule .* index.php [L]
