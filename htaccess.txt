@@ -322,7 +322,7 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## This blocks most common fingerprinting attacks ;)
 ## Note: Change www\.example\.com with your own domain name, substituting the
 ## dots with \., i.e.: www\.example\.com for www.example.com
-RewriteRule ^images/stories/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico?)$ - [L]
+RewriteRule ^images/stories/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
 RewriteRule \.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [F]
