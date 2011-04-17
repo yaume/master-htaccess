@@ -1,7 +1,7 @@
 ###############################################################################
 ## The Master .htaccess
 ##
-## Version 3.2 - April 8th, 2011
+## Version 3.3 - WORK IN PROGRESS
 ##
 ## ----------
 ## This file is designed to be the template .htaccess file to put on your new
@@ -46,7 +46,7 @@
 ##
 ## CHANGELOG:
 ## Version 3.3 (PENDING RELEASE)
-## - The optimizations ported from Joomla! 1.6.2's .htaccess code screw up your sites. Sorry.
+## - Version 3.2 wasn't tested and killed some sites
 ## Version 3.2 (April 8th, 2011)
 ## - Some slight improvements with negligible (if any) performance impact
 ## Version 3.1 (April 5th, 2011)
@@ -263,7 +263,7 @@ RewriteCond %{QUERY_STRING} base64_(en|de)code\(.*\) [OR]
 # RewriteCond %{QUERY_STRING} base64_encode\(.*\) [OR]
 # RewriteCond %{QUERY_STRING} base64_decode\(.*\) [OR]
 # Block out any script that includes a <script> tag in URL
-RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
 # Block out any script trying to set a PHP GLOBALS variable via URL
 RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
 # Block out any script trying to modify a _REQUEST variable via URL
@@ -303,6 +303,7 @@ RewriteRule ^kickstart\.php$ - [L]
 
 ## Allow Agora attachments, but not PHP files in that directory!
 RewriteCond %{REQUEST_FILENAME} !(\.php)$
+RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^components/com_agora/img/members/ - [L]
 
 # Add more rules for allowing full access (except PHP files) on more directories here
@@ -310,7 +311,7 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## Uncomment to allow full access to the cache directory (strongly not recommended!)
 #RewriteRule ^cache/ - [L]
 ## Uncomment to allow full access to the tmp directory (strongly not recommended!)
-#RewriteRule ^tmp/ - [L]
+#RewriteRule ^tmp/ $1 [L]
 
 # Add more full access rules here
 
@@ -375,6 +376,8 @@ RewriteRule ^(components|modules|plugins|templates)/ - [F]
 ## Disallow rogue scripts in your site's root
 # Exception: Allow Joomla!'s index.php and index2.php files
 RewriteRule ^index2?\.php$ - [L]
+## If you disable the back-end protection above, please add this line:
+# RewriteRule ^administrator/index[23]?\.php$ - [L]
 RewriteRule ^.*\.php$ - [F]
 
 ## Disallow access to htaccess.txt and configuration.php-dist
@@ -383,9 +386,9 @@ RewriteRule ^(htaccess\.txt|configuration\.php-dist|php\.ini)$ - [F]
 ## SQLi first line of defense, thanks to Radek Suski (SigSiu.net) @
 ## http://www.sigsiu.net/presentations/fortifying_your_joomla_website.html
 ## May cause problems on legitimate requests
-RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
-RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
-RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC]
+RewriteCond %{QUERY_STRING} concat.*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union.*select.*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union.*all.*select.* [NC]
 RewriteRule .* - [F]
 
 ########## End - Advanced server protection
@@ -414,7 +417,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_URI} !^/index\.php
 # and the request is for the site root, or for an extensionless URL,
 # or the requested URL ends with one of the listed extensions
-RewriteCond %{REQUEST_URI} /component/|(.*\.(php|html?|feed|pdf|raw|ini|zip|json|file|vcf))$ [NC]
+RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|raw|ini|zip|json|file|vcf))$ [NC]
 # and the requested path and file doesn't directly match a physical file
 RewriteCond %{REQUEST_FILENAME} !-f
 # and the requested path doesn't match a physical folder
