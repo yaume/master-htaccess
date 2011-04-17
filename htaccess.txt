@@ -45,6 +45,8 @@
 ## Lead Developer, AkeebaBackup.com
 ##
 ## CHANGELOG:
+## Version 3.3 (PENDING RELEASE)
+## - The optimizations ported from Joomla! 1.6.2's .htaccess code screw up your sites. Sorry.
 ## Version 3.2 (April 8th, 2011)
 ## - Some slight improvements with negligible (if any) performance impact
 ## Version 3.1 (April 5th, 2011)
@@ -322,7 +324,7 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## This blocks most common fingerprinting attacks ;)
 ## Note: Change www\.example\.com with your own domain name, substituting the
 ## dots with \., i.e.: www\.example\.com for www.example.com
-RewriteRule ^images/stories/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [L]
+RewriteRule ^images/stories/.*\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
 RewriteRule \.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [F]
@@ -348,7 +350,7 @@ RewriteRule .* - [F]
 RewriteRule ^administrator/?$ - [L]
 RewriteRule ^administrator/index\.(php|html?)$ - [L]
 RewriteRule ^administrator/index[23]\.php$ - [L]
-RewriteRule ^administrator/(components|modules|templates|images|plugins)/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
+RewriteRule ^administrator/(components|modules|templates|images|plugins)/.*\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
 RewriteRule ^administrator/ - [F]
 
 ## Explicitly allow access only to XML-RPC's xmlrpc/index.php or plain xmlrpc/ directory
@@ -360,20 +362,20 @@ RewriteRule ^includes/js/ - [L]
 RewriteRule ^(cache|includes|language|libraries|logs|tmp)/ - [F]
 
 ## Allow limited access for certain Joomla! system directories with client-accessible content
-RewriteRule ^(components|modules|plugins|templates)/[^.]+\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
+RewriteRule ^(components|modules|plugins|templates)/.*\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|html?|mp(eg?|[34])|avi|wav|og[gv]|xlsx?|docx?|pptx?|zip|rar|pdf|xps|txt|7z|svg|od[tsp]|flv|mov)$ - [L]
 ## Uncomment this line if you have extensions which require direct access to their own
 ## custom index.php files. Note that this is UNSAFE and the developer should be ashamed
 ## for being so lame, lazy and security unconscious.
-# RewriteRule ^(components|modules|plugins|templates)/([^/]+/)*(index\.php)?$ - [L]
+# RewriteRule ^(components|modules|plugins|templates)/.*(index\.php)?$ - [L]
 ## Uncomment the following line if your template requires direct access to PHP files
 ## inside its directory, e.g. GZip compressed copies of its CSS files
-# RewriteRule ^templates/[^.]+\.php$ - [L]
+# RewriteRule ^templates/.*\.php$ - [L]
 RewriteRule ^(components|modules|plugins|templates)/ - [F]
 
 ## Disallow rogue scripts in your site's root
 # Exception: Allow Joomla!'s index.php and index2.php files
 RewriteRule ^index2?\.php$ - [L]
-RewriteRule ^[^.]+\.php$ - [F]
+RewriteRule ^.*\.php$ - [F]
 
 ## Disallow access to htaccess.txt and configuration.php-dist
 RewriteRule ^(htaccess\.txt|configuration\.php-dist|php\.ini)$ - [F]
@@ -412,7 +414,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_URI} !^/index\.php
 # and the request is for the site root, or for an extensionless URL,
 # or the requested URL ends with one of the listed extensions
-RewriteCond %{REQUEST_URI} /component/|(/[^.]*|\.(php|html?|feed|pdf|raw|ini|zip|json|file|vcf))$ [NC]
+RewriteCond %{REQUEST_URI} /component/|(.*\.(php|html?|feed|pdf|raw|ini|zip|json|file|vcf))$ [NC]
 # and the requested path and file doesn't directly match a physical file
 RewriteCond %{REQUEST_FILENAME} !-f
 # and the requested path doesn't match a physical folder
