@@ -311,7 +311,7 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 ## Uncomment to allow full access to the cache directory (strongly not recommended!)
 #RewriteRule ^cache/ - [L]
 ## Uncomment to allow full access to the tmp directory (strongly not recommended!)
-#RewriteRule ^tmp/ $1 [L]
+#RewriteRule ^tmp/ - [L]
 
 # Add more full access rules here
 
@@ -328,6 +328,7 @@ RewriteRule ^components/com_agora/img/members/ - [L]
 RewriteRule ^images/stories/.*\.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [L]
 RewriteCond %{HTTP_REFERER} .
 RewriteCond %{HTTP_REFERER} !^https?://(www\.)?example\.com [NC]
+RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule \.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [F]
 
 ## Disallow visual fingerprinting of Joomla! sites (module position dump)
@@ -373,12 +374,11 @@ RewriteRule ^(components|modules|plugins|templates)/.*\.(jp(e?g|2)?|png|gif|bmp|
 # RewriteRule ^templates/.*\.php$ - [L]
 RewriteRule ^(components|modules|plugins|templates)/ - [F]
 
-## Disallow rogue scripts in your site's root
-# Exception: Allow Joomla!'s index.php and index2.php files
-RewriteRule ^index2?\.php$ - [L]
-## If you disable the back-end protection above, please add this line:
-# RewriteRule ^administrator/index[23]?\.php$ - [L]
-RewriteRule ^.*\.php$ - [F]
+## Disallow access to rogue PHP files throughout the site, unless they are explicitly allowed
+RewriteCond %{REQUEST_FILENAME} (\.php)$
+RewriteCond %{REQUEST_FILENAME} !(/index[23]?\.php)$
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule (.*\.php)$ - [F]
 
 ## Disallow access to htaccess.txt and configuration.php-dist
 RewriteRule ^(htaccess\.txt|configuration\.php-dist|php\.ini)$ - [F]
