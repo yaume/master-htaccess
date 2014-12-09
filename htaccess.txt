@@ -338,7 +338,7 @@ RewriteRule \.(jp(e?g|2)?|png|gif|bmp|css|js|swf|ico)$ - [F]
 ## and tmpl query parameters
 RewriteCond %{QUERY_STRING} (^|&)tmpl=(component|system) [NC]
 RewriteRule .* - [L]
-RewriteCond %{QUERY_STRING} (^|&)t(p|emplate|mpl)= [NC]
+RewriteCond %{QUERY_STRING} (^|&)t(p|emplate)= [NC]
 RewriteRule .* - [F]
 
 ## Disallow PHP Easter Eggs (can be used in fingerprinting attacks to determine
